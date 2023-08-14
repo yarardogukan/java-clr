@@ -25,10 +25,28 @@ public class GradeService {
     }
 
     public Grade createOrUpdateGrade(Grade grade) {
+        double not = (grade.getVizeNotu() * 0.4) + (grade.getFinalNotu() * 0.6);
+        grade.setOrtalamaNot(not);
+
+        String harfKarsiligi = calculateLetterGrade(not);
+        grade.setHarfKarsiligi(harfKarsiligi);
         return gradeRepository.save(grade);
     }
 
     public void deleteGradeById(Long id) {
         gradeRepository.deleteById(id);
+    }
+    private String calculateLetterGrade(double ortalamaNot) {
+        if (ortalamaNot >= 85) {
+            return "AA";
+        } else if (ortalamaNot >= 70) {
+            return "BA";
+        } else if (ortalamaNot >= 60) {
+            return "BB";
+        } else if (ortalamaNot >= 50) {
+            return "CB";
+        } else {
+            return "FF";
+        }
     }
 }
